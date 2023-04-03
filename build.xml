@@ -2,28 +2,10 @@
 <project name="ProgrezCloudApiJava" default="default" basedir=".">
     <description>Builds, tests, and runs the project ProgrezCloudApiJava.</description>
     <import file="nbproject/build-impl.xml"/>
-    <!--
-    <target name="-post-jar">
-        <jar jarfile="dist/progrezcloudapi-1.0.1.jar">
-            <zipfileset src="${dist.jar}" excludes="META-INF/*" />
-            <zipfileset src="lib/json-20230227.jar" excludes="META-INF/*" />
-
-            <manifest>
-                <attribute name="Main-Class" value="fun5i.module.api.ProgrezCloudApi" />
-            </manifest>
-        </jar>
-    </target>
-    -->
-        
-    <target name="compile" depends="init">
+    
+    <target name="all" depends="init">
         <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build">
-            <classpath>
-              <fileset dir="lib">
-                <include name="json-20230227.jar"/>
-              </fileset>
-            </classpath>
-            <!-- biar nama parameter di method keliatan-->
+        <javac srcdir="src" destdir="build" fork="true">
             <compilerarg value="-parameters"/>
         </javac>
     </target>
