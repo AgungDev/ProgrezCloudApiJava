@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package fun5i.module.api;
 
 import fun5i.module.api.model.*;
@@ -35,7 +30,7 @@ public class ProgrezCloudApi {
     public ProgrezCloudApi(){
     }
     
-    public void setProject(PCLoginModel account,ProjectCallback a, String tokenProject, String fields){
+    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String fields){
         
         JSONObject payload = new JSONObject();
         JSONObject payload2 = new JSONObject();
