@@ -8,14 +8,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 import org.json.JSONObject;
+import java.util.logging.Logger;
 
 /**
  *
  * @author fun5i
- * version 1.0.1
+ * version 1.0.2
  */
 public class ProgrezCloudApi {
+    
+    private static final Logger log = Logger.getLogger(ProgrezCloudApi.class.getName());
     
     @FunctionalInterface
     public interface ProjectCallback{
@@ -30,30 +34,34 @@ public class ProgrezCloudApi {
     public ProgrezCloudApi(){
     }
     
-    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String fields){
+    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String[] fields){
         
-        JSONObject payload = new JSONObject();
-        JSONObject payload2 = new JSONObject();
-        JSONObject payload3 = new JSONObject();
-        
-        payload3.put("fields", fields);
-        payload2.put("maintask", payload3);
-        payload2.put("task", payload3);
-        payload2.put("subtask", payload3);
-        payload.put("tasks", payload2);
-        payload.put("token", tokenProject);
-        
-        String projt = this.actProject(
-                account,
-                payload.toString()
-        );
+        try {
+            JSONObject payload = new JSONObject();
+            JSONObject payload2 = new JSONObject();
 
-        JSONObject res = new JSONObject(projt);
-        a.response(
-                res.getInt("errno"),
-                res.getString("errmsg"),
-                (res.getInt("errno") > 0)? res.toString(): res.getJSONObject("data").toString()
-        );
+            payload2.put("maintask", new JSONObject().put("fields", fields[0]));
+            payload2.put("task", new JSONObject().put("fields", fields[1]));
+            payload2.put("subtask", new JSONObject().put("fields", fields[2]));
+            
+            payload.put("tasks", payload2);
+            payload.put("token", tokenProject);
+
+            String projt = this.actProject(
+                    account,
+                    payload.toString()
+            );
+
+            JSONObject res = new JSONObject(projt);
+            a.response(
+                    res.getInt("errno"),
+                    res.getString("errmsg"),
+                    (res.getInt("errno") > 0)? res.toString(): res.getJSONObject("data").toString()
+            );
+        }catch(ArrayIndexOutOfBoundsException e){
+            log.log(Level.WARNING, "Buatlah array dengan jumlah 3 indeks, [maintask, task, dan subtask], contoh \n new String[]{\"task_name, tasktype\",\"task_name\",\"status_done\"}");
+        }
+        
     }
     
     public void login(LoginCallback a, String username, String password){
