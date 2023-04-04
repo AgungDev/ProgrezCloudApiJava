@@ -8,7 +8,11 @@ progrezCloudApi.login((int errno, String errmsg, PCLoginModel account) -> {
       setNama(account.getFullName());             // menampilkan namamu
       setGambarProfile(account.getProfile());     // menampilkan gambar profile
       tampilkanProject(body);                     // menampilkan project
-    },"TOKEN_PROJECT", "task_name, nominal");
+    },"TOKEN_PROJECT", new String[]{
+      "task_name, tasktype",       // maintask
+      "all",                       // task
+      "privacy, nominal"           // subtask
+    });
     
 },"USER_KEY");
 ```
