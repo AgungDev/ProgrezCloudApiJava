@@ -1,5 +1,6 @@
 package fun5i.module.api;
 
+import com.google.gson.Gson;
 import fun5i.module.api.model.*;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author fun5i
- * version 1.0.2
+ * version 1.2.0
  */
 public class ProgrezCloudApi {
     
@@ -23,7 +24,7 @@ public class ProgrezCloudApi {
     
     @FunctionalInterface
     public interface ProjectCallback{
-        void response(int errno2, String errmsg2, String body);
+        void response(int errno2, String errmsg2, PCProjectModel body);
     }
     
     @FunctionalInterface
@@ -34,8 +35,8 @@ public class ProgrezCloudApi {
     public ProgrezCloudApi(){
     }
     
-    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String[] fields){
-        
+    private String generatePayload(String tokenProject, String[] fields){
+        String result = null;
         try {
             JSONObject payload = new JSONObject();
             JSONObject payload2 = new JSONObject();
@@ -47,20 +48,37 @@ public class ProgrezCloudApi {
             payload.put("tasks", payload2);
             payload.put("token", tokenProject);
 
-            String projt = this.actProject(
-                    account,
-                    payload.toString()
-            );
-
-            JSONObject res = new JSONObject(projt);
-            a.response(
-                    res.getInt("errno"),
-                    res.getString("errmsg"),
-                    (res.getInt("errno") > 0)? res.toString(): res.getJSONObject("data").toString()
-            );
-        }catch(ArrayIndexOutOfBoundsException e){
-            log.log(Level.WARNING, "Buatlah array dengan jumlah 3 indeks, [maintask, task, dan subtask], contoh \n new String[]{\"task_name, tasktype\",\"task_name\",\"status_done\"}");
+            result = payload.toString();
+        }catch (ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
         }
+
+        return result;
+    }
+    
+    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String[] fields){
+        String payload = generatePayload(tokenProject, fields);
+        String jsonString = this.actProject(
+                account,
+                payload
+        );
+        JSONObject res = new JSONObject(jsonString);
+        PCProjectModel projectModel = null;
+        
+        // convert to object
+        if (res.getInt("errno") == 0){
+            Gson gson =new Gson();
+            projectModel = gson.fromJson(
+                    res.getJSONObject("data").toString(), PCProjectModel.class);
+            //System.out.println("Berhasil " + projectModel.getData().getMaintask().get(0).getTaskName());
+        }
+        
+        // Update interface
+        a.response(
+                res.getInt("errno"),
+                res.getString("errmsg"),
+                projectModel
+        );
         
     }
     
