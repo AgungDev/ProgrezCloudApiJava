@@ -6,12 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class PCProjectModel {
 
 @SerializedName("errno")
+@Expose
 private String errno;
-
 @SerializedName("data")
+@Expose
 private Data data;
-
 @SerializedName("errmsg")
+@Expose
 private String errmsg;
 
 /**

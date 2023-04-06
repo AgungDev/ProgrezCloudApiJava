@@ -6,21 +6,22 @@ import com.google.gson.annotations.SerializedName;
 public class Project {
 
 @SerializedName("image")
+@Expose
 private String image;
-
 @SerializedName("status_done")
+@Expose
 private String statusDone;
-
 @SerializedName("name")
+@Expose
 private String name;
-
 @SerializedName("privacy")
+@Expose
 private String privacy;
-
 @SerializedName("progress")
+@Expose
 private String progress;
-
 @SerializedName("flying_id")
+@Expose
 private String flyingId;
 
 /**
