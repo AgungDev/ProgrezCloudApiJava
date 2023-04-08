@@ -1,23 +1,29 @@
 # Progrez Cloud API Java
 
-# new update fungsi
+### new update
 
-## new update fungsi
+Ada beberapa pembahruan seperti:
+- Autentikasi pada saat mengambil project, di mana programnya melakukan 2x request. Setelah di lakukan pembahruan, sekarang saya hanya perlu melakukan 1x request untuk mendapatkan project.
+- Ada beberapa fugsi yang bisa di tambahkan untuk mempermudah, dalam pengerjaan antarmuka pengguna.
+- Saya membuang beberapa kodingan usang di versi sebelumnya.
 
 ### Setter
 
 ```
-setUserKey(String userkey): Fungsi untuk melakukan login dengan userkey
-setProject(String tokenproject, String[] fields): Fungsi untuk mengubah detail proyek pada ProgrezCloudApi.
+setUserKey(userkey): Fungsi untuk melakukan login dengan userkey
+setUserLogin(username, password)
+setProject(tokenproject, fields): Fungsi untuk mengubah detail proyek pada ProgrezCloudApi.
 loadNewCridential(): Fungsi ini untuk mendapatkan akses baru, jika sewaktu2 akses lama usang
 ```
 
 ### Getter
 
 ```
+login(listener): Membuat akun dan menyimpan Credential
+loadNewCridential(): Re-login
 getUsername(): Mengambil Username ketika return dari isLoginType(): false
 getProject(): Fungsi untuk mendapatkan detail proyek setelah melakukan setProject(String tokenproject, String[] fields)
-getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String[] fields): Fungsi untuk mendapatkan detail proyek pada ProgrezCloudApi dengan menggunakan ProjectCallback.
+getProject(cridentials , listener, tokenProject, fields): Fungsi untuk mendapatkan detail proyek pada ProgrezCloudApi dengan menggunakan ProjectCallback.
 getMaintasks(): Fungsi untuk mendapatkan daftar tugas utama dalam suatu proyek.
 isLoginType(): Menentukan login mengunakan (userkey): true, atau mengunakan (username,password): false
 getUserkey(): Fungsi untuk mendapatkan kunci pengguna ProgrezCloudApi.
@@ -30,18 +36,20 @@ getErrorMessage(): Fungsi untuk mendapatkan pesan kesalahan saat melakukan permi
 ## contoh
 
 ```java
-ProgrezCloudApi progrezCloudApi = new ProgrezCloudApi(); // initial class
-progrezCloudApi.login((int errno, String errmsg, PCLoginModel account) -> {
-  if (errno == 0)
-    progrezCloudApi.getProject(account, (int errno2, String errmsg2, PCProjectModel body) -> {
-      setNama(account.getFullName());             // menampilkan namamu
-      setGambarProfile(account.getProfile());     // menampilkan gambar profile
-      tampilkanProject(body);                     // menampilkan project
-    },"TOKEN_PROJECT", new String[]{
-      "task_name, tasktype",       // maintask
-      "all",                       // task
-      "privacy, nominal"           // subtask
-    });
+ProgrezCloudApi api = new ProgrezCloudApi().setUserKey( USERKEY);
+api.login((int errno, String errmsg, PCLoginModel account) -> {
+    echo(account.getFullname());
+});
 
-},"USER_KEY");
+api.setProject(TOKEN_PROJECT, new String[]{
+    "all",      // Maintasks
+    "all",      // Taks
+    "all"       // Subtasks
+});
+
+if(api.getError() == 0){
+    echo(api.getProject().getName());
+}else{
+    echo(api.getErrorMessage());
+}
 ```
