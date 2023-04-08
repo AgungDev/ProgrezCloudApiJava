@@ -7,6 +7,27 @@ Ada beberapa pembahruan seperti:
 - Ada beberapa fugsi yang bisa di tambahkan untuk mempermudah, dalam pengerjaan antarmuka pengguna.
 - Saya membuang beberapa kodingan usang di versi sebelumnya.
 
+## Example Source
+
+```java
+ProgrezCloudApi api = new ProgrezCloudApi().setUserKey( USERKEY);
+api.login((int errno, String errmsg, PCLoginModel account) -> {
+    echo(account.getFullname());
+});
+
+api.setProject(TOKEN_PROJECT, new String[]{
+    "all",      // Maintasks
+    "all",      // Taks
+    "all"       // Subtasks
+});
+
+if(api.getError() == 0){
+    echo(api.getProject().getName());
+}else{
+    echo(api.getErrorMessage());
+}
+```
+
 ### Setter
 
 ```
@@ -31,25 +52,4 @@ getProfileUser(): Fungsi untuk mendapatkan model login pengguna.
 getCredentials(): Fungsi untuk mendapatkan kredensial pengguna ProgrezCloudApi.
 getError(): Fungsi untuk mendapatkan kode kesalahan saat melakukan permintaan ke ProgrezCloudApi.
 getErrorMessage(): Fungsi untuk mendapatkan pesan kesalahan saat melakukan permintaan ke ProgrezCloudApi.
-```
-
-## contoh
-
-```java
-ProgrezCloudApi api = new ProgrezCloudApi().setUserKey( USERKEY);
-api.login((int errno, String errmsg, PCLoginModel account) -> {
-    echo(account.getFullname());
-});
-
-api.setProject(TOKEN_PROJECT, new String[]{
-    "all",      // Maintasks
-    "all",      // Taks
-    "all"       // Subtasks
-});
-
-if(api.getError() == 0){
-    echo(api.getProject().getName());
-}else{
-    echo(api.getErrorMessage());
-}
 ```
