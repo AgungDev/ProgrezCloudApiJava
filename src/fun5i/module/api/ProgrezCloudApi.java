@@ -128,7 +128,7 @@ public class ProgrezCloudApi {
     }
 
     // update 2.0.0
-    public void setError(int error) {
+    private void setError(int error) {
         this.error = error;
     }
 
@@ -138,7 +138,7 @@ public class ProgrezCloudApi {
     }
 
     // update 2.0.0
-    public void setErrorMessage(String errorMessage) {
+    private void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
     
