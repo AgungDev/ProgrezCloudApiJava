@@ -23,6 +23,12 @@ public class ProgrezCloudApi {
     
     private static final Logger log = Logger.getLogger(ProgrezCloudApi.class.getName());
     
+    // update 2.0.0
+    public interface ProgrezApiListener{
+        void onSuccess();
+        void onError(int errorCode, String errorMessage);
+    }
+    
     // update 1.2.0
     @FunctionalInterface
     public interface ProjectCallback{
@@ -62,13 +68,15 @@ public class ProgrezCloudApi {
     }
     
     // update 2.0.0
-    private int error = 0;
-    private String errorMessage = "ok";
-    private String userkey;
+    private int error = -1;
+    private String errorMessage = "lah kok kosong";
+    private boolean loginType;
+    private String userkey, username, password;
     private PCLoginModel loginModel;
     private PCCredentials credentials;
     private Project project;
     private List<Maintask> maintasks;
+    
     
     // update 2.0.0
     private void setSemuaObjectProject(PCProjectModel projectModel){
@@ -92,23 +100,19 @@ public class ProgrezCloudApi {
     public List<Maintask> getMaintasks() {
         return maintasks;
     }
-
-    // update 2.0.0
-    public void setMaintasks(List<Maintask> maintasks) {
-        this.maintasks = maintasks;
-    }
     
     // update 2.0.0
     public String getUserkey() {
         return userkey;
     }
 
-    public PCLoginModel getLoginModel() {
+    // update 2.0.0
+    public PCLoginModel getProfileUser() {
         return loginModel;
     }
 
     // update 2.0.0
-    public void setLoginModel(PCLoginModel loginModel) {
+    private void setLoginModel(PCLoginModel loginModel) {
         this.loginModel = loginModel;
     }
 
@@ -141,6 +145,16 @@ public class ProgrezCloudApi {
     private void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    // update 2.0.0
+    public boolean isLoginType() {
+        return loginType;
+    }
+
+    // update 2.0.0
+    public String getUsername() {
+        return username;
+    }
     
     // update 2.0.0
     public void setProject(String tokenProject, String[] fields){
@@ -148,7 +162,7 @@ public class ProgrezCloudApi {
         
         String payload = generatePayload(tokenProject, fields);
         String jsonString = this.actProject(
-                getLoginModel(),
+                this.credentials,
                 payload
         );
         JSONObject res = new JSONObject(jsonString);
@@ -174,23 +188,25 @@ public class ProgrezCloudApi {
             out = gson.fromJson(
                     res.getJSONObject("data").toString(), PCProjectModel.class);
             //System.out.println("Berhasil " + projectModel.getData().getMaintask().get(0).getTaskName());
+            //apiListener.onSuccess();
+            setSemuaObjectProject(out);
         }else{
-            setError(res.getInt("errno"));
-            setErrorMessage(res.getString("errmsg"));
+            this.error= res.getInt("errno");
+            this.errorMessage = res.getString("errmsg");
         }
-        setSemuaObjectProject(out);
+        
     }
     
     // update 2.0.0
-    public void getProject(PCLoginModel account,ProjectCallback a, String tokenProject, String[] fields){
+    public void getProject(PCCredentials credential,ProjectCallback listenerProject, String tokenProject, String[] fields){
         PCProjectModel out = null;
         String payload = generatePayload(tokenProject, fields);
         String jsonString = this.actProject(
-                account,
+                credential,
                 payload
         );
         JSONObject res = new JSONObject(jsonString);
-        
+        //System.err.println(jsonString);
         // convert to object
         if (res.getInt("errno") == 0){
             // setCredential
@@ -212,40 +228,46 @@ public class ProgrezCloudApi {
             out = gson.fromJson(
                     res.getJSONObject("data").toString(), PCProjectModel.class);
             //System.out.println("Berhasil " + projectModel.getData().getMaintask().get(0).getTaskName());
+            setSemuaObjectProject(out);
+            
         }else{
             setError(res.getInt("errno"));
             setErrorMessage(res.getString("errmsg"));
         }
         
         // Update interface
-        a.responseProject(
+        listenerProject.responseProject(
                 res.getInt("errno"),
                 res.getString("errmsg"),
                 out
         );
-        setSemuaObjectProject(out);
+        
     }
     
     // update 2.0.0
     public ProgrezCloudApi setUserKey(String userkey){
         this.userkey = userkey;
-        String res = actLogin("type=userkey&userkey="+userkey);
-        JSONObject respond = new JSONObject(res);
-        
-        if (respond.getInt("errno") > 0){
-            this.error = respond.getInt("errno");
-            this.errorMessage = respond.getString("errmsg");
-        }else{
-            //success set loginModel and credential
-            setLoginModel(generateAccount(respond));
-        }
+        this.loginType = true;
+        return this;
+    }
+    
+    // update 2.0.0
+    public ProgrezCloudApi setUserLogin(String username, String password){
+        this.username = username;
+        this.password = password;
+        this.loginType = false;
         return this;
     }
     
     //update 2.0.0
-    public void login(LoginCallback a, String username, String password){
-        String res = actLogin("login="+username+"&password="+password);
-        JSONObject respond = new JSONObject(res);
+    public void login(LoginCallback listener){
+        String request = "";
+        if (this.isLoginType()){
+            request = actLogin("type=userkey&userkey="+userkey);
+        }else{
+            request = actLogin("login="+username+"&password="+password);
+        }
+        JSONObject respond = new JSONObject(request);
         
         PCLoginModel abc = null;
         if(respond.getInt("errno") == 0){
@@ -254,11 +276,14 @@ public class ProgrezCloudApi {
             setCredentials(abc.getCredentials());
         }
         
-        a.responseLogin(
+        listener.responseLogin(
                 respond.getInt("errno"),
                 respond.getString("errmsg"),
                 (respond.getInt("errno") > 0)?null:abc
         );
+        
+        setError(respond.getInt("errno"));
+        setErrorMessage(respond.getString("errmsg"));
     }
     
     // update 2.0.0
@@ -273,24 +298,6 @@ public class ProgrezCloudApi {
             //success set loginModel and credential
             setLoginModel(generateAccount(respond));
         }
-    }
-    
-    // update 2.0.0
-    public void login(LoginCallback a, String userkey){
-        String res = actLogin("type=userkey&userkey="+userkey);
-        JSONObject respond = new JSONObject(res);
-        
-        PCLoginModel abc = null;
-        if(respond.getInt("errno") == 0){
-            abc = generateAccount(respond);
-            setLoginModel(abc);
-        }
-        
-        a.responseLogin(
-                respond.getInt("errno"),
-                respond.getString("errmsg"),
-                (respond.getInt("errno") > 0)?null:abc
-        );
     }
     
     // update 2.0.0
@@ -348,9 +355,8 @@ public class ProgrezCloudApi {
     }
     
     // update 1.2.0
-    private String actProject(PCLoginModel accouts, String payload){
+    private String actProject(PCCredentials credentials, String payload){
         String result = null;
-        PCCredentials credentials = accouts.getCredentials();
         try {
             byte[] postData       = payload.getBytes( StandardCharsets.UTF_8 );
             int    postDataLength = postData.length;
