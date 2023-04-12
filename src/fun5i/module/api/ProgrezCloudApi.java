@@ -166,6 +166,7 @@ public class ProgrezCloudApi {
                 payload
         );
         JSONObject res = new JSONObject(jsonString);
+        //System.out.println(jsonString);
         
         // convert to object
         if (res.getInt("errno") == 0){

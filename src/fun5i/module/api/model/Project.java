@@ -3,6 +3,7 @@ package fun5i.module.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+// update 1.2.0
 public class Project {
 
 @SerializedName("image")

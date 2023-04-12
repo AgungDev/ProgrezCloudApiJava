@@ -3,8 +3,12 @@ package fun5i.module.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+// update 2.0.1
 public class Subtask {
 
+@SerializedName("task_name")
+@Expose
+private String taskName;
 @SerializedName("total")
 @Expose
 private String total;
@@ -24,16 +28,28 @@ public Subtask() {
 
 /**
 *
+* @param taskName
 * @param total
 * @param flyingId
 * @param statusDone
 */
-public Subtask(String total, String statusDone, String flyingId) {
+public Subtask(String taskName, String total, String statusDone, String flyingId) {
 super();
+this.taskName = taskName;
 this.total = total;
 this.statusDone = statusDone;
 this.flyingId = flyingId;
 }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+
 
 public String getTotal() {
 return total;
