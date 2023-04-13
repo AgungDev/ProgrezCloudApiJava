@@ -3,6 +3,7 @@ package fun5i.module.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+// update 3.0.0
 public class PCProjectModel {
 
 @SerializedName("errno")

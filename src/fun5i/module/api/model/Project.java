@@ -3,7 +3,7 @@ package fun5i.module.api.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-// update 1.2.0
+// update 3.0.0
 public class Project {
 
 @SerializedName("image")
@@ -59,8 +59,8 @@ public void setImage(String image) {
 this.image = image;
 }
 
-public String getStatusDone() {
-return statusDone;
+public boolean getStatusDone() {
+return Boolean.parseBoolean(statusDone);
 }
 
 public void setStatusDone(String statusDone) {
@@ -75,16 +75,16 @@ public void setName(String name) {
 this.name = name;
 }
 
-public String getPrivacy() {
-return privacy;
+public int getPrivacy() {
+return Integer.parseInt(privacy);
 }
 
 public void setPrivacy(String privacy) {
 this.privacy = privacy;
 }
 
-public String getProgress() {
-return progress;
+public int getProgress() {
+return Integer.parseInt(progress);
 }
 
 public void setProgress(String progress) {

@@ -4,30 +4,63 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-// update 1.2.0
+// update 3.0.0
 public class Maintask {
 
-@SerializedName("task_name")
+@SerializedName("author")
 @Expose
-private String taskName;
-@SerializedName("total")
-@Expose
-private String total;
+private Author author;
 @SerializedName("tasktype")
 @Expose
 private String tasktype;
-@SerializedName("isParent")
+@SerializedName("task_name")
 @Expose
-private String isParent;
-@SerializedName("task")
+private String taskName;
+@SerializedName("datetime")
 @Expose
-private List<Task> task;
-@SerializedName("flying_id")
+private String datetime;
+@SerializedName("status_done")
 @Expose
-private String flyingId;
+private String statusDone;
+@SerializedName("description")
+@Expose
+private String description;
+@SerializedName("filenya")
+@Expose
+private String filenya;
+@SerializedName("nominal")
+@Expose
+private String nominal;
+@SerializedName("quantity")
+@Expose
+private String quantity;
+@SerializedName("debitcredit")
+@Expose
+private String debitcredit;
+@SerializedName("sticky")
+@Expose
+private String sticky;
+@SerializedName("datetime_done")
+@Expose
+private String datetimeDone;
+@SerializedName("privacy")
+@Expose
+private String privacy;
 @SerializedName("views")
 @Expose
 private Integer views;
+@SerializedName("flying_id")
+@Expose
+private String flyingId;
+@SerializedName("isParent")
+@Expose
+private String isParent;
+@SerializedName("total")
+@Expose
+private String total;
+@SerializedName("task")
+@Expose
+private List<Task> task;
 
 /**
 * No args constructor for use in serialization
@@ -38,23 +71,61 @@ public Maintask() {
 
 /**
 *
-* @param total
 * @param tasktype
+* @param quantity
 * @param isParent
-* @param task
 * @param flyingId
+* @param author
+* @param datetimeDone
+* @param description
+* @param privacy
+* @param debitcredit
+* @param datetime
+* @param total
+* @param filenya
+* @param task
+* @param nominal
+* @param statusDone
+* @param sticky
 * @param taskName
 * @param views
 */
-public Maintask(String taskName, String total, String tasktype, String isParent, List<Task> task, String flyingId, Integer views) {
+public Maintask(Author author, String tasktype, String taskName, String datetime, String statusDone, String description, String filenya, String nominal, String quantity, String debitcredit, String sticky, String datetimeDone, String privacy, Integer views, String flyingId, String isParent, String total, List<Task> task) {
 super();
-this.taskName = taskName;
-this.total = total;
+this.author = author;
 this.tasktype = tasktype;
-this.isParent = isParent;
-this.task = task;
-this.flyingId = flyingId;
+this.taskName = taskName;
+this.datetime = datetime;
+this.statusDone = statusDone;
+this.description = description;
+this.filenya = filenya;
+this.nominal = nominal;
+this.quantity = quantity;
+this.debitcredit = debitcredit;
+this.sticky = sticky;
+this.datetimeDone = datetimeDone;
+this.privacy = privacy;
 this.views = views;
+this.flyingId = flyingId;
+this.isParent = isParent;
+this.total = total;
+this.task = task;
+}
+
+public Author getAuthor() {
+return author;
+}
+
+public void setAuthor(Author author) {
+this.author = author;
+}
+
+public int getTasktype() {
+return Integer.parseInt(tasktype);
+}
+
+public void setTasktype(String tasktype) {
+this.tasktype = tasktype;
 }
 
 public String getTaskName() {
@@ -65,36 +136,92 @@ public void setTaskName(String taskName) {
 this.taskName = taskName;
 }
 
-public String getTotal() {
-return total;
+public String getDatetime() {
+return datetime;
 }
 
-public void setTotal(String total) {
-this.total = total;
+public void setDatetime(String datetime) {
+this.datetime = datetime;
 }
 
-public String getTasktype() {
-return tasktype;
+public boolean getStatusDone() {
+return Boolean.parseBoolean(statusDone);
 }
 
-public void setTasktype(String tasktype) {
-this.tasktype = tasktype;
+public void setStatusDone(String statusDone) {
+this.statusDone = statusDone;
 }
 
-public String getIsParent() {
-return isParent;
+public String getDescription() {
+return description;
 }
 
-public void setIsParent(String isParent) {
-this.isParent = isParent;
+public void setDescription(String description) {
+this.description = description;
 }
 
-public List<Task> getTask() {
-return task;
+public String getFilenya() {
+return filenya;
 }
 
-public void setTask(List<Task> task) {
-this.task = task;
+public void setFilenya(String filenya) {
+this.filenya = filenya;
+}
+
+public int getNominal() {
+return Integer.parseInt(nominal);
+}
+
+public void setNominal(String nominal) {
+this.nominal = nominal;
+}
+
+public int getQuantity() {
+return Integer.parseInt(quantity);
+}
+
+public void setQuantity(String quantity) {
+this.quantity = quantity;
+}
+
+public String getDebitcredit() {
+return debitcredit;
+}
+
+public void setDebitcredit(String debitcredit) {
+this.debitcredit = debitcredit;
+}
+
+public String getSticky() {
+return sticky;
+}
+
+public void setSticky(String sticky) {
+this.sticky = sticky;
+}
+
+public String getDatetimeDone() {
+return datetimeDone;
+}
+
+public void setDatetimeDone(String datetimeDone) {
+this.datetimeDone = datetimeDone;
+}
+
+public int getPrivacy() {
+return Integer.parseInt(privacy);
+}
+
+public void setPrivacy(String privacy) {
+this.privacy = privacy;
+}
+
+public Integer getViews() {
+return views;
+}
+
+public void setViews(Integer views) {
+this.views = views;
 }
 
 public String getFlyingId() {
@@ -105,12 +232,28 @@ public void setFlyingId(String flyingId) {
 this.flyingId = flyingId;
 }
 
-public Integer getViews() {
-return views;
+public boolean getIsParent() {
+return Boolean.parseBoolean(isParent);
 }
 
-public void setViews(Integer views) {
-this.views = views;
+public void setIsParent(String isParent) {
+this.isParent = isParent;
+}
+
+public int getTotal() {
+return Integer.parseInt(total);
+}
+
+public void setTotal(String total) {
+this.total = total;
+}
+
+public List<Task> getTask() {
+return task;
+}
+
+public void setTask(List<Task> task) {
+this.task = task;
 }
 
 }

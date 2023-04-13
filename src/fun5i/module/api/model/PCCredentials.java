@@ -8,6 +8,8 @@ package fun5i.module.api.model;
  *
  * @author fun5i
  */
+
+// update 1.2.0
 public class PCCredentials {
     
     private final String d,s,o;

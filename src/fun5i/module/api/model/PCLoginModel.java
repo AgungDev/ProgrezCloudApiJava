@@ -7,6 +7,8 @@ package fun5i.module.api.model;
  *
  * @author fun5i
  */
+
+// update 1.2.0
 public class PCLoginModel {
     
     private final String flying_id,fullname,photo;
