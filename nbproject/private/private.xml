@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/fun5i/NetBeansProjects/ProgrezCloudApiJava/src/fun5i/module/api/model/Maintask.java</file>
             <file>file:/home/fun5i/NetBeansProjects/ProgrezCloudApiJava/src/fun5i/module/api/ProgrezCloudApi.java</file>
+            <file>file:/home/fun5i/NetBeansProjects/ProgrezCloudApiJava/src/fun5i/module/api/model/Task.java</file>
+            <file>file:/home/fun5i/NetBeansProjects/ProgrezCloudApiJava/src/fun5i/module/api/model/Project.java</file>
+            <file>file:/home/fun5i/NetBeansProjects/ProgrezCloudApiJava/src/fun5i/module/api/model/Subtask.java</file>
         </group>
     </open-files>
 </project-private>

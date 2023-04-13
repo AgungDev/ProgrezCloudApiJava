@@ -59,8 +59,8 @@ public void setImage(String image) {
 this.image = image;
 }
 
-public boolean getStatusDone() {
-return Boolean.parseBoolean(statusDone);
+public int getStatusDone() {
+return Integer.parseInt(statusDone);
 }
 
 public void setStatusDone(String statusDone) {

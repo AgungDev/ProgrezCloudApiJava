@@ -129,8 +129,8 @@ public void setDatetime(String datetime) {
 this.datetime = datetime;
 }
 
-public boolean getStatusDone() {
-return Boolean.parseBoolean(statusDone);
+public int getStatusDone() {
+return Integer.parseInt(statusDone);
 }
 
 public void setStatusDone(String statusDone) {
